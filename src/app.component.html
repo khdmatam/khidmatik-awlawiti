@@ -1,0 +1,325 @@
+
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg shadow-sm">
+  <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+    <div class="flex items-center space-x-4 rtl:space-x-reverse">
+      <i class="fa-solid fa-shield-halved text-3xl text-sky-600"></i>
+      <h1 class="text-xl font-extrabold text-slate-800">خدمتك أولويتي</h1>
+    </div>
+    <nav class="hidden md:flex items-center space-x-2 rtl:space-x-reverse">
+      @for(category of serviceCategories(); track category.id) {
+        <a 
+          (click)="scrollToSection(category.id)"
+          [class]="'px-3 py-2 rounded-md transition-all duration-300 font-medium cursor-pointer ' +
+                   (activeSectionId() === category.id 
+                      ? getBgColor(category.color) + ' text-white shadow' 
+                      : 'text-slate-600 ' + getHoverTextColor(category.color))">
+          {{ category.name }}
+        </a>
+      }
+    </nav>
+    <a [href]="generalWhatsAppLink()" target="_blank" class="hidden md:flex items-center justify-center px-4 py-2 bg-emerald-500 text-white rounded-lg font-bold shadow-md hover:bg-emerald-600 transition-transform hover:scale-105">
+      <i class="fa-brands fa-whatsapp me-2"></i>
+      <span>واتساب</span>
+    </a>
+  </div>
+</header>
+
+<!-- Main Content -->
+<main>
+  <!-- Hero Section -->
+  <section class="hero-bg overflow-hidden">
+    <div class="container mx-auto px-6 py-20 sm:py-24 md:py-32">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <!-- Text Content -->
+            <div class="text-center lg:text-start">
+                <h2 class="text-4xl md:text-6xl font-extrabold text-slate-900 leading-tight animate-fade-in-up" style="animation-delay: 0.1s;">
+                    نُنجز معاملاتك الحكومية بكل سهولة واحترافية
+                </h2>
+                <p class="mt-4 text-lg md:text-xl text-slate-600 max-w-xl mx-auto lg:mx-0 animate-fade-in-up" style="animation-delay: 0.3s;">
+                    نوفر عليك الوقت والجهد بتقديم حلول متكاملة وسريعة لجميع خدماتك الحكومية والإلكترونية. فريقنا المتخصص يضمن لك إنجازًا دقيقًا ومتابعة مستمرة، لراحة بالك.
+                </p>
+                <div class="mt-10 animate-fade-in-up" style="animation-delay: 0.5s;">
+                    <a [href]="generalWhatsAppLink()" target="_blank" class="inline-flex items-center justify-center px-8 py-4 bg-sky-600 text-white text-lg rounded-xl font-bold shadow-lg hover:bg-sky-700 transition-transform hover:scale-105 transform">
+                        <i class="fa-brands fa-whatsapp text-2xl me-3"></i>
+                        <span>تواصل معنا الآن</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Visual Element -->
+            <div class="relative h-80 lg:h-96 mt-12 lg:mt-0">
+                <div class="absolute inset-0 w-full h-full flex items-center justify-center">
+                    <!-- Floating Icons -->
+                    <div class="absolute top-10 left-5 sm:left-16 w-24 h-24 bg-white rounded-2xl shadow-lg flex items-center justify-center animate-float" style="animation-delay: 0s;">
+                        <i class="fa-solid fa-passport text-4xl text-emerald-500"></i>
+                    </div>
+                    <div class="absolute bottom-12 right-5 sm:right-12 w-28 h-28 bg-white rounded-2xl shadow-xl flex items-center justify-center animate-float" style="animation-delay: -1.5s; animation-duration: 7s;">
+                        <i class="fa-solid fa-briefcase text-5xl text-sky-500"></i>
+                    </div>
+                    <div class="absolute top-20 right-10 sm:right-20 w-20 h-20 bg-white rounded-2xl shadow-md flex items-center justify-center animate-float" style="animation-delay: -3s;">
+                        <i class="fa-solid fa-store text-3xl text-amber-500"></i>
+                    </div>
+                    <div class="absolute bottom-20 left-10 sm:left-24 w-16 h-16 bg-white rounded-2xl shadow-lg flex items-center justify-center animate-float" style="animation-delay: -4.5s; animation-duration: 8s;">
+                        <i class="fa-solid fa-file-signature text-2xl text-slate-500"></i>
+                    </div>
+                    
+                    <!-- Blurred background shapes -->
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-sky-200/50 rounded-full blur-3xl"></div>
+                    <div class="absolute top-1/4 right-1/4 w-48 h-48 bg-emerald-200/40 rounded-full blur-3xl"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <!-- Search Section -->
+  <section class="py-16 bg-slate-100">
+    <div class="container mx-auto px-6">
+        <div 
+          class="max-w-2xl mx-auto relative search-container"
+          (focusin)="isSearchFocused.set(true)">
+            <div class="text-center mb-6">
+                <h3 class="text-3xl font-extrabold text-slate-800">ابحث عن خدمتك بسرعة</h3>
+                <p class="mt-2 text-slate-500">استخدم البحث الذكي للوصول المباشر إلى الخدمة التي تحتاجها.</p>
+            </div>
+            <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-4 pointer-events-none text-slate-500 z-10">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <input 
+                    #searchInput
+                    type="search" 
+                    id="service-search"
+                    [value]="searchTerm()"
+                    (input)="searchTerm.set($any($event.target).value)"
+                    class="block w-full p-4 ps-12 pe-12 text-lg text-slate-900 border-2 border-slate-200 rounded-xl bg-white/80 backdrop-blur-sm focus:bg-white focus:border-sky-500 focus:shadow-xl focus:shadow-sky-500/20 focus:scale-[1.01] transition-all duration-300" 
+                    placeholder="اكتب اسم الخدمة هنا... (مثال: تجديد إقامة)"
+                    autocomplete="off"
+                >
+                @if (searchTerm()) {
+                    <button 
+                      (click)="searchTerm.set(''); searchInput.focus()" 
+                      class="absolute inset-y-0 end-0 flex items-center pe-4 text-slate-400 hover:text-sky-600 transition-colors z-10" 
+                      aria-label="مسح البحث">
+                        <i class="fa-solid fa-xmark fa-lg"></i>
+                    </button>
+                }
+            </div>
+
+            <!-- Live Search Dropdown -->
+            @if (searchTerm() && isSearchFocused()) {
+                <div class="absolute top-full w-full mt-2 bg-white rounded-xl shadow-2xl z-20 overflow-hidden border border-slate-200 animate-fade-in-fast">
+                    <div class="max-h-[60vh] overflow-y-auto">
+                        @if (filteredServiceCategories().length > 0) {
+                            @for (category of filteredServiceCategories(); track category.id) {
+                                <div>
+                                    <h5 class="px-4 py-2 bg-slate-50 text-sm font-bold text-slate-600 border-b border-slate-200 sticky top-0">{{ category.name }}</h5>
+                                    <ul>
+                                        @for (service of category.services; track service.name) {
+                                            <li>
+                                                <button (click)="selectService(service, category.id)" class="w-full text-start px-4 py-3 hover:bg-sky-50 transition-colors duration-150">
+                                                    @let nameParts = getHighlightedParts(service.name);
+                                                    <p class="font-semibold text-slate-800">
+                                                        <span>{{ nameParts.before }}</span><span class="bg-sky-200/70 text-sky-800 rounded">{{ nameParts.match }}</span><span>{{ nameParts.after }}</span>
+                                                    </p>
+                                                    @let descParts = getHighlightedParts(service.description);
+                                                    <p class="text-sm text-slate-500 mt-1">
+                                                        <span>{{ descParts.before }}</span><span class="bg-amber-200/60 text-amber-800 rounded">{{ descParts.match }}</span><span>{{ descParts.after }}</span>
+                                                    </p>
+                                                </button>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        } @else {
+                            <div class="p-6 text-center">
+                                <i class="fa-solid fa-box-open text-4xl text-slate-400 mb-3"></i>
+                                <p class="font-semibold text-slate-700">لا توجد خدمات تطابق بحثك</p>
+                                <p class="text-sm text-slate-500">حاول استخدام كلمات مفتاحية مختلفة.</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+  </section>
+
+  <!-- Services Sections -->
+  @if(filteredServiceCategories().length > 0) {
+    @for (category of filteredServiceCategories(); track category.id) {
+      <section [id]="category.id" class="py-16 sm:py-20 bg-white even:bg-slate-50 scroll-mt-20">
+        <div class="container mx-auto px-6">
+          <div class="text-center mb-12 max-w-3xl mx-auto">
+            <i [class]="'text-4xl mb-3 ' + category.icon + ' ' + getTextColor(category.color)"></i>
+            <h3 class="text-3xl font-extrabold text-slate-800">{{ category.name }}</h3>
+            <p class="mt-2 text-lg text-slate-500">{{ category.description }}</p>
+            <div [class]="'w-24 h-1 mx-auto mt-4 rounded-full ' + getBgColor(category.color)"></div>
+          </div>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            @for (service of category.services; track service.name) {
+              <div 
+                [id]="'service-' + category.id + '-' + slugify(service.name)"
+                [class]="'group bg-white rounded-2xl shadow-md border-t-4 overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-2 ' + getBorderColor(category.color) + ' ' + getHoverShadowColor(category.color)">
+                <div class="p-6 flex-grow">
+                  <div [class]="'w-12 h-12 rounded-xl mb-5 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ' + getLightBgColor(category.color)">
+                      <i [class]="'text-2xl ' + category.icon + ' ' + getTextColor(category.color)"></i>
+                  </div>
+                  <h4 [class]="'text-lg font-bold text-slate-900 transition-colors duration-300 group-hover:' + getTextColor(category.color)">{{ service.name }}</h4>
+                  <p class="mt-2 text-slate-600 text-sm">{{ service.description }}</p>
+                </div>
+                <div class="p-6 pt-0 mt-auto">
+                  <a [href]="generateWhatsAppLink(service.name)" target="_blank" [class]="'w-full group/button flex items-center justify-center px-4 py-3 text-white rounded-lg font-semibold shadow-md transition-colors ' + getBgColor(category.color) + ' ' + getHoverBgColor(category.color)">
+                    <i class="fa-solid fa-paper-plane me-2 transition-transform duration-300 group-hover/button:translate-x-1 group-hover/button:rotate-6"></i>
+                    <span>اطلب الخدمة</span>
+                  </a>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </section>
+    }
+  } @else {
+    <section class="py-16 sm:py-20">
+      <div class="container mx-auto px-6 text-center">
+        <div class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-lg">
+          <i class="fa-solid fa-magnifying-glass text-6xl text-slate-400 mb-6"></i>
+          <h3 class="text-2xl font-bold text-slate-700">لم يتم العثور على خدمات مطابقة</h3>
+          <p class="text-slate-500 mt-2">
+            يرجى محاولة استخدام كلمة بحث مختلفة أو 
+            <button (click)="searchTerm.set('')" class="text-sky-600 hover:underline font-semibold">إعادة تعيين البحث</button>
+            لعرض جميع الخدمات.
+          </p>
+        </div>
+      </div>
+    </section>
+  }
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="py-16 sm:py-20 bg-slate-100">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-12 max-w-3xl mx-auto">
+        <i class="fa-solid fa-users-gear text-4xl mb-3 text-amber-500"></i>
+        <h3 class="text-3xl font-extrabold text-slate-800">ماذا يقول عملاؤنا؟</h3>
+        <p class="mt-2 text-lg text-slate-500">نفخر بثقة عملائنا ونسعد دائمًا بخدمتهم. إليك بعض من آرائهم.</p>
+        <div class="w-24 h-1 mx-auto mt-4 rounded-full bg-amber-500"></div>
+      </div>
+
+      @if (activeTestimonial(); as testimonial) {
+        <div 
+          class="relative max-w-3xl mx-auto"
+          (mouseenter)="stopTestimonialAutoplay()"
+          (mouseleave)="startTestimonialAutoplay()">
+          <!-- Previous Button -->
+          <button (click)="prevTestimonial()" class="absolute top-1/2 -translate-y-1/2 -start-4 md:-start-16 w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center text-slate-500 hover:bg-sky-500 hover:text-white transition-all duration-300 z-10" aria-label="Previous testimonial">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+
+          <!-- Main Testimonial Card -->
+          <div class="relative bg-white rounded-2xl shadow-xl border border-slate-200 p-6 sm:p-8 md:p-12 overflow-hidden min-h-[340px] sm:min-h-[320px] md:min-h-[280px] flex items-center">
+            <i class="fa-solid fa-quote-left text-slate-100 text-8xl absolute -top-2 -start-4"></i>
+            <div class="relative z-10 w-full animate-fade-in">
+              <!-- Main testimonial header -->
+              <div class="flex items-start space-x-4 rtl:space-x-reverse">
+                <!-- AVATAR (always visible) -->
+                <div [class]="'w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center text-xl font-bold ' + getAvatarBgColor(testimonial.name) + ' ' + getAvatarTextColor(getAvatarBgColor(testimonial.name))">
+                  {{ getInitials(testimonial.name) }}
+                </div>
+                <!-- INFO WRAPPER -->
+                <div class="flex-grow pt-1">
+                  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                    <!-- Name & City -->
+                    <div>
+                      <h4 class="font-extrabold text-slate-800 text-lg">{{ testimonial.name }}</h4>
+                      <p class="text-sm text-slate-500">{{ testimonial.city }}</p>
+                    </div>
+                    <!-- Rating -->
+                    <div class="flex items-center text-amber-400 mt-2 sm:mt-0">
+                      @for(i of [].constructor(testimonial.rating); track i) {
+                          <i class="fa-solid fa-star"></i>
+                        }
+                        @for(i of [].constructor(5 - testimonial.rating); track i) {
+                          <i class="fa-regular fa-star"></i>
+                        }
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- REVIEW TEXT -->
+              <p class="text-slate-700 text-lg leading-relaxed mt-6">"{{ testimonial.review }}"</p>
+            </div>
+          </div>
+
+          <!-- Next Button -->
+          <button (click)="nextTestimonial()" class="absolute top-1/2 -translate-y-1/2 -end-4 md:-end-16 w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center text-slate-500 hover:bg-sky-500 hover:text-white transition-all duration-300 z-10" aria-label="Next testimonial">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+        </div>
+
+        <!-- Navigation Dots -->
+        <div class="flex justify-center space-x-2 rtl:space-x-reverse mt-8">
+          @for(t of testimonials(); let i = $index; track t.name) {
+            <button 
+              (click)="goToTestimonial(i)" 
+              [attr.aria-label]="'Go to testimonial ' + (i + 1)"
+              [class]="'w-3 h-3 rounded-full transition-all duration-300 ' + (activeTestimonialIndex() === i ? 'bg-sky-500 w-6' : 'bg-slate-300 hover:bg-slate-400')">
+            </button>
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- More Services CTA Section -->
+  <section class="bg-slate-800">
+      <div class="container mx-auto px-6 py-16 text-center">
+          <h3 class="text-3xl font-extrabold text-white">لم تجد خدمتك؟ نحن هنا لخدمتك!</h3>
+          <p class="mt-3 text-lg text-slate-300 max-w-2xl mx-auto">
+              قائمة خدماتنا تتجاوز ما هو معروض. إذا كانت لديك معاملة معينة أو استفسار، فلا تتردد. فريق الخبراء لدينا جاهز لتقديم الدعم والمشورة اللازمة لك.
+          </p>
+          <div class="mt-8">
+              <a [href]="generalWhatsAppLink()" target="_blank" class="inline-flex items-center justify-center px-8 py-4 bg-emerald-500 text-white text-lg rounded-xl font-bold shadow-lg hover:bg-emerald-600 transition-transform hover:scale-105 transform">
+                  <i class="fa-brands fa-whatsapp text-2xl me-3"></i>
+                  <span>اطلب استشارة عبر واتساب</span>
+              </a>
+          </div>
+      </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-slate-900 text-white py-12">
+  <div class="container mx-auto px-6 text-center">
+    <div class="flex justify-center items-center space-x-4 rtl:space-x-reverse mb-4">
+        <i class="fa-solid fa-shield-halved text-3xl text-sky-400"></i>
+        <h1 class="text-2xl font-extrabold">خدمتك أولويتي</h1>
+    </div>
+    <p class="text-slate-300">جميع الحقوق محفوظة © {{ currentYear }}</p>
+    <p class="max-w-xl mx-auto mt-4 text-slate-400 text-sm">شريكك الموثوق لإنجاز أسهل وأسرع. راحتك هي أولويتنا.</p>
+    <div class="mt-6 text-slate-300">
+      <p>هل لديك استفسار؟ نحن في خدمتك على واتساب:</p>
+      <a [href]="generalWhatsAppLink()" target="_blank" class="text-xl font-bold text-emerald-400 hover:text-emerald-300 transition-colors" dir="ltr">
+        {{ formattedWhatsAppNumber() }}
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating Action Buttons -->
+
+<!-- Scroll to Top Button -->
+<button
+  (click)="scrollToTop()"
+  [class]="'fixed bottom-6 start-6 z-40 w-14 h-14 bg-sky-600 rounded-full flex items-center justify-center shadow-lg text-white hover:bg-sky-700 transition-all duration-300 transform hover:scale-110 ' + (showScrollToTopButton() ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none')"
+  aria-label="Scroll to top"
+>
+  <i class="fa-solid fa-arrow-up text-2xl"></i>
+</button>
+
+<!-- Floating WhatsApp Button -->
+<a [href]="generalWhatsAppLink()" target="_blank" class="fixed bottom-6 end-6 z-40 w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center shadow-xl text-white hover:bg-emerald-600 transition-all duration-300 transform hover:scale-110">
+  <i class="fa-brands fa-whatsapp text-4xl"></i>
+</a>
